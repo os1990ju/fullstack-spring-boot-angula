@@ -18,11 +18,24 @@ export class ClienteService {
     return this.http.get<Cliente[]>(this.urlEndpoint)
   }
 
+  //consultar un cliente
+  getCliente(id):Observable<Cliente>{
+    return this.http.get<Cliente>(`${this.urlEndpoint}/${id}`)
+  }
   //crear cliente
   create(cliente:Cliente):Observable<Cliente>{
     return this.http.post<Cliente>(this.urlEndpoint, cliente, {headers: this.httpHeaders})
   }
   
+  //actualizar cliente
+  update(cliente:Cliente):Observable<Cliente>{
+      return this.http.put<Cliente>(`${this.urlEndpoint}/${cliente.id}`,cliente,{headers:this.httpHeaders})
+  }
+
+  //eliminar cliente
+  delete(id:number):Observable<Cliente>{
+    return this.http.delete<Cliente>(`${this.urlEndpoint}/${id}`,{headers:this.httpHeaders})
+  }
   constructor(private http:HttpClient) { 
 
   }
