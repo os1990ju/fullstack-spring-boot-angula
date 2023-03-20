@@ -36,6 +36,11 @@ export class ClienteService {
   create(cliente:Cliente):Observable<any>{
     return this.http.post<any>(this.urlEndpoint, cliente, {headers: this.httpHeaders}).pipe(
       catchError( e=>{
+
+        //si es bad request lo maneja el error en el form.
+        if(e.status==400){
+          return throwError(e);
+        }
         console.log(e);
         Swal.fire('error al editar',e.error.mensaje,'error');
         return throwError(e);
@@ -46,9 +51,12 @@ export class ClienteService {
   }
   
   //actualizar cliente
-  update(cliente:Cliente):Observable<Cliente>{
-      return this.http.put<Cliente>(`${this.urlEndpoint}/${cliente.id}`,cliente,{headers:this.httpHeaders}).pipe(
+  update(cliente:Cliente):Observable<any>{
+      return this.http.put<any>(`${this.urlEndpoint}/${cliente.id}`,cliente,{headers:this.httpHeaders}).pipe(
         catchError( e=>{
+          if(e.status==400){
+            return throwError(e);
+          }
           console.log(e);
           Swal.fire('error al editar',e.error.mensaje,'error');
           return throwError(e);

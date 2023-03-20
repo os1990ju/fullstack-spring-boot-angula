@@ -12,7 +12,8 @@ export class FormComponent implements OnInit{
 
   public titulo:string = "Formulario de registro";
   public cliente: Cliente = new Cliente();
-  
+  //arreglo para errores de bad reques
+  public errores:string[];
   constructor(private clienteservice:ClienteService,
               private router:Router,
               private activateRoute:ActivatedRoute){}
@@ -35,6 +36,12 @@ cargarCliente(){
       response => {
         this.router.navigate(['/clientes'])
         swal.fire(`${response.mensaje}`,`El cliente ${response.Cliente.nombre} ha sido creado con exito`, 'success')
+      },
+      err =>{
+        this.errores = err.error.errors as string[];
+        console.log('el codig del error de bakend es: '+err.status);
+        console.log(err.error.erros);
+        
       }
     )
   }
@@ -43,9 +50,15 @@ cargarCliente(){
   public update():void{
     this.clienteservice.update(this.cliente)
     .subscribe(
-      cliente=>{
+      json=>{
         this.router.navigate(['/clientes'])
-        swal.fire('Cliente actualizado', `Cliente ${cliente.nombre}: actualizado con exito!`, 'success')
+        swal.fire('Cliente actualizado', `Cliente ${json.Cliente.nombre}: actualizado con exito!`, 'success')
+      },
+      err =>{
+        this.errores = err.error.errors as string[];
+        console.log('el codig del error de bakend es: '+err.status);
+        console.log(err.error.erros);
+        
       }
     )
   }
