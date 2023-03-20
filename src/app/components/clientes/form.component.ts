@@ -30,10 +30,11 @@ cargarCliente(){
 
 //crear un cliente.
   public create():void{
-    this.clienteservice.create(this.cliente).subscribe(
-      cliente => {
+    this.clienteservice.create(this.cliente)
+    .subscribe(
+      response => {
         this.router.navigate(['/clientes'])
-        swal.fire('Nuevo cliente',`Cliente ${cliente.nombre} ${cliente.apellido} creado con exito!`, 'success')
+        swal.fire(`${response.mensaje}`,`El cliente ${response.Cliente.nombre} ha sido creado con exito`, 'success')
       }
     )
   }
@@ -44,7 +45,7 @@ cargarCliente(){
     .subscribe(
       cliente=>{
         this.router.navigate(['/clientes'])
-        swal.fire('Cliente actualizado', `Cliente ${this.cliente.nombre} actualizado con exito!`, 'success')
+        swal.fire('Cliente actualizado', `Cliente ${cliente.nombre}: actualizado con exito!`, 'success')
       }
     )
   }
